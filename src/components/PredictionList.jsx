@@ -1,8 +1,8 @@
 const pct = (p) => `${Math.round(p * 100)}%`;
 
 // Open predictions can be resolved (true/false) or deleted. Resolved ones are
-// read-only history. Outcome is shown as a word, not by colour (T1.11 adds the
-// glyph); the math never changes once resolved.
+// read-only history. Outcome carries a glyph + word so meaning never depends
+// on colour alone; the math never changes once resolved.
 function PredictionList({ predictions, onResolve, onDelete }) {
   const open = predictions.filter((p) => p.outcome === null);
   const resolved = predictions.filter((p) => p.outcome !== null);
@@ -40,7 +40,7 @@ function PredictionList({ predictions, onResolve, onDelete }) {
             <li key={p.id}>
               <span>{p.text}</span>
               <span>{pct(p.probability)}</span>
-              <span>{p.outcome ? 'Yes' : 'No'}</span>
+              <span>{p.outcome ? '✓ Yes' : '✗ No'}</span>
               <span>{p.category}</span>
             </li>
           ))}
