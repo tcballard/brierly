@@ -4,6 +4,7 @@ import PredictionForm from './components/PredictionForm';
 import PredictionList from './components/PredictionList';
 import ScoreSummary from './components/ScoreSummary';
 import ReliabilityDiagram from './components/ReliabilityDiagram';
+import DataIO from './components/DataIO';
 import './App.css';
 
 function App() {
@@ -46,6 +47,13 @@ function App() {
     setPredictions((prev) => prev.filter((p) => p.id !== id));
   }
 
+  async function importPredictions(incoming) {
+    for (const prediction of incoming) {
+      await put(prediction);
+    }
+    setPredictions(await loadAll());
+  }
+
   return (
     <main>
       <h1>brierly</h1>
@@ -61,6 +69,7 @@ function App() {
             onResolve={resolvePrediction}
             onDelete={deletePrediction}
           />
+          <DataIO predictions={predictions} onImport={importPredictions} />
         </>
       )}
     </main>
