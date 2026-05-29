@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { loadAll, put, remove } from './db';
 import PredictionForm from './components/PredictionForm';
 import PredictionList from './components/PredictionList';
+import ScoreSummary from './components/ScoreSummary';
 import './App.css';
 
 function App() {
@@ -51,11 +52,14 @@ function App() {
       {loading ? (
         <p>Loading…</p>
       ) : (
-        <PredictionList
-          predictions={predictions}
-          onResolve={resolvePrediction}
-          onDelete={deletePrediction}
-        />
+        <>
+          <ScoreSummary predictions={predictions} />
+          <PredictionList
+            predictions={predictions}
+            onResolve={resolvePrediction}
+            onDelete={deletePrediction}
+          />
+        </>
       )}
     </main>
   );
