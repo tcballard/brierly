@@ -3,6 +3,7 @@ import { loadAll, put, remove } from './db';
 import PredictionForm from './components/PredictionForm';
 import PredictionList from './components/PredictionList';
 import ScoreSummary from './components/ScoreSummary';
+import ReliabilityDiagram from './components/ReliabilityDiagram';
 import './App.css';
 
 function App() {
@@ -54,6 +55,7 @@ function App() {
       ) : (
         <>
           <ScoreSummary predictions={predictions} />
+          <ReliabilityDiagram predictions={predictions} />
           <PredictionList
             predictions={predictions}
             onResolve={resolvePrediction}
