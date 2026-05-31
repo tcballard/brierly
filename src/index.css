@@ -1,111 +1,128 @@
+/* ============================================================
+   brierly — design tokens + base reset
+   One source of truth for colour, type, spacing, radius, shadow
+   and motion. Light is the default; dark follows the OS via
+   prefers-color-scheme (system-auto).
+   ============================================================ */
+
 :root {
-  --text: #6b6375;
-  --text-h: #08060d;
-  --bg: #fff;
-  --border: #e5e4e7;
-  --code-bg: #f4f3ec;
-  --accent: #aa3bff;
-  --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
-  --social-bg: rgba(244, 243, 236, 0.5);
-  --shadow:
-    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
-
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --mono: ui-monospace, Consolas, monospace;
-
-  font: 18px/145% var(--sans);
-  letter-spacing: 0.18px;
   color-scheme: light dark;
-  color: var(--text);
-  background: var(--bg);
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 
-  @media (max-width: 1024px) {
-    font-size: 16px;
-  }
+  /* ---- Brand / tint ------------------------------------- */
+  --tint:            #5856D6;   /* calibration indigo */
+  --tint-press:      #4644b8;
+
+  /* ---- Category hues (glyph + colour, never colour alone) */
+  --cat-work:        #007AFF;
+  --cat-markets:     #F08C00;
+  --cat-personal:    #AF52DE;
+
+  /* ---- Outcomes ----------------------------------------- */
+  --pos:             #248A3D;   /* ✓ Yes  (AA on white) */
+  --pos-bg:          #E6F4EA;
+  --neg:             #D70015;   /* ✗ No */
+  --neg-bg:          #FCE8E6;
+
+  /* ---- Due nudge (calm, not alarming) ------------------- */
+  --due:             #B25E00;
+  --due-bg:          #FBEFD9;
+
+  /* ---- Greys / surfaces (system grouped) ---------------- */
+  --bg:              #F2F2F7;   /* grouped background */
+  --bg-2:            #FFFFFF;   /* card / elevated */
+  --bg-3:            #FFFFFF;   /* sheet */
+  --fill:            rgba(120,120,128,0.12);
+  --fill-2:          rgba(120,120,128,0.08);
+  --hairline:        rgba(60,60,67,0.16);
+
+  /* ---- Text -------------------------------------------- */
+  --label:           #000000;
+  --label-2:         rgba(60,60,67,0.62);
+  --label-3:         rgba(60,60,67,0.34);
+  --on-tint:         #FFFFFF;
+
+  /* ---- Chart ------------------------------------------- */
+  --grid:            rgba(60,60,67,0.16);
+  --diag:            rgba(60,60,67,0.30);
+
+  /* ---- Radius ------------------------------------------ */
+  --r-chip:   980px;
+  --r-card:   20px;
+  --r-inner:  14px;
+  --r-sheet:  38px;
+  --r-pill:   980px;
+
+  /* ---- Spacing (4pt grid) ------------------------------ */
+  --sp-1: 4px;  --sp-2: 8px;  --sp-3: 12px; --sp-4: 16px;
+  --sp-5: 20px; --sp-6: 24px; --sp-7: 28px; --sp-8: 32px;
+  --sp-10: 40px; --sp-12: 48px;
+
+  /* ---- Type scale (rem → honours Dynamic Type) --------- */
+  --f-large:    2.125rem;  /* 34 */
+  --f-title1:   1.75rem;   /* 28 */
+  --f-title2:   1.375rem;  /* 22 */
+  --f-title3:   1.25rem;   /* 20 */
+  --f-headline: 1.0625rem; /* 17, 600 */
+  --f-body:     1.0625rem; /* 17 */
+  --f-callout:  1rem;      /* 16 */
+  --f-subhead:  0.9375rem; /* 15 */
+  --f-foot:     0.8125rem; /* 13 */
+  --f-caption:  0.75rem;   /* 12 */
+  --num: -apple-system, "SF Pro Display", system-ui, sans-serif;
+  --sys: -apple-system, "SF Pro Text", system-ui, sans-serif;
+
+  /* ---- Shadow ------------------------------------------ */
+  --shadow-card:  0 1px 2px rgba(0,0,0,0.04), 0 6px 16px rgba(0,0,0,0.05);
+  --shadow-sheet: 0 -8px 40px rgba(0,0,0,0.18);
+  --shadow-fab:   0 6px 20px rgba(88,86,214,0.40);
+  --shadow-pop:   0 2px 8px rgba(0,0,0,0.10), 0 12px 32px rgba(0,0,0,0.16);
+
+  /* ---- Motion ------------------------------------------ */
+  --dur-fast:   140ms;
+  --dur:        260ms;
+  --dur-slow:   420ms;
+  --spring:     cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease:       cubic-bezier(0.32, 0.72, 0, 1);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --text: #9ca3af;
-    --text-h: #f3f4f6;
-    --bg: #16171d;
-    --border: #2e303a;
-    --code-bg: #1f2028;
-    --accent: #c084fc;
-    --accent-bg: rgba(192, 132, 252, 0.15);
-    --accent-border: rgba(192, 132, 252, 0.5);
-    --social-bg: rgba(47, 48, 58, 0.5);
-    --shadow:
-      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
-  }
+    --tint:        #5E5CE6;
+    --tint-press:  #6e6cf0;
 
-  #social .button-icon {
-    filter: invert(1) brightness(2);
-  }
-}
+    --cat-work:    #0A84FF;
+    --cat-markets: #FF9F0A;
+    --cat-personal:#BF5AF2;
 
-body {
-  margin: 0;
-}
+    --pos:         #30D158;
+    --pos-bg:      rgba(48,209,88,0.18);
+    --neg:         #FF453A;
+    --neg-bg:      rgba(255,69,58,0.18);
 
-#root {
-  width: 1126px;
-  max-width: 100%;
-  margin: 0 auto;
-  text-align: center;
-  border-inline: 1px solid var(--border);
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
-  box-sizing: border-box;
-}
+    --due:         #FFB340;
+    --due-bg:      rgba(255,179,64,0.15);
 
-h1,
-h2 {
-  font-family: var(--heading);
-  font-weight: 500;
-  color: var(--text-h);
-}
+    --bg:          #000000;
+    --bg-2:        #1C1C1E;
+    --bg-3:        #1C1C1E;
+    --fill:        rgba(120,120,128,0.26);
+    --fill-2:      rgba(120,120,128,0.16);
+    --hairline:    rgba(84,84,88,0.55);
 
-h1 {
-  font-size: 56px;
-  letter-spacing: -1.68px;
-  margin: 32px 0;
-  @media (max-width: 1024px) {
-    font-size: 36px;
-    margin: 20px 0;
+    --label:       #FFFFFF;
+    --label-2:     rgba(235,235,245,0.62);
+    --label-3:     rgba(235,235,245,0.32);
+
+    --grid:        rgba(235,235,245,0.18);
+    --diag:        rgba(235,235,245,0.34);
+
+    --shadow-card:  0 1px 2px rgba(0,0,0,0.5);
+    --shadow-sheet: 0 -8px 40px rgba(0,0,0,0.6);
+    --shadow-fab:   0 6px 22px rgba(94,92,230,0.55);
+    --shadow-pop:   0 2px 8px rgba(0,0,0,0.5), 0 12px 32px rgba(0,0,0,0.6);
   }
 }
-h2 {
-  font-size: 24px;
-  line-height: 118%;
-  letter-spacing: -0.24px;
-  margin: 0 0 8px;
-  @media (max-width: 1024px) {
-    font-size: 20px;
-  }
-}
-p {
-  margin: 0;
-}
 
-code,
-.counter {
-  font-family: var(--mono);
-  display: inline-flex;
-  border-radius: 4px;
-  color: var(--text-h);
-}
-
-code {
-  font-size: 15px;
-  line-height: 135%;
-  padding: 4px 8px;
-  background: var(--code-bg);
-}
+/* ---- base reset / full-viewport app ------------------- */
+html, body, #root { height: 100%; }
+body { margin: 0; background: var(--bg); }
