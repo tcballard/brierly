@@ -1,58 +1,67 @@
+/* ============================================================
+   DataIO — Export / Import JSON. The only real backup (IndexedDB
+   is per-browser). Import is guarded by a try/catch; a bad file
+   surfaces a clear message instead of corrupting state.
+   ============================================================ */
 import { useRef, useState } from 'react';
+import { I } from '../icons';
 
-// The only real backup: IndexedDB is per-browser, so export is the backstop.
-// Import is guarded by a try/catch (no schema-validator module on purpose);
-// a bad file surfaces a clear message instead of corrupting state.
 function DataIO({ predictions, onImport }) {
   const fileRef = useRef(null);
-  const [error, setError] = useState('');
+  const [msg, setMsg] = useState(null);
 
-  function handleExport() {
-    const json = JSON.stringify(predictions, null, 2);
-    const blob = new Blob([json], { type: 'application/json' });
+  function flash(t) { setMsg(t); setTimeout(() => setMsg(null), 2600); }
+
+  function exportJson() {
+    const blob = new Blob([JSON.stringify(predictions, null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
     a.download = `brierly-${new Date().toISOString().slice(0, 10)}.json`;
     a.click();
     URL.revokeObjectURL(url);
+    flash(`Exported ${predictions.length} predictions`);
   }
 
-  async function handleImport(e) {
-    const file = e.target.files[0];
-    if (!file) return;
-    setError('');
+  async function onFile(e) {
+    const f = e.target.files && e.target.files[0];
+    if (!f) return;
     try {
-      const data = JSON.parse(await file.text());
-      if (!Array.isArray(data)) {
-        throw new Error('expected a JSON array of predictions');
-      }
+      const data = JSON.parse(await f.text());
+      if (!Array.isArray(data)) throw new Error('not an array');
       await onImport(data);
-    } catch (err) {
-      setError(`Import failed: ${err.message}`);
+      flash(`Imported ${data.length} predictions`);
+    } catch {
+      flash("Couldn't read that file");
     } finally {
-      e.target.value = ''; // let the same file be re-imported
+      e.target.value = '';
     }
   }
 
   return (
-    <section>
-      <h2>Data</h2>
-      <button type="button" onClick={handleExport}>
-        Export JSON
-      </button>
-      <button type="button" onClick={() => fileRef.current?.click()}>
-        Import JSON
-      </button>
-      <input
-        ref={fileRef}
-        type="file"
-        accept="application/json"
-        onChange={handleImport}
-        hidden
-      />
-      {error && <p role="alert">{error}</p>}
-    </section>
+    <div>
+      <div className="io-group">
+        <button className="io-row" onClick={exportJson}>
+          <span className="io-ico" style={{ background: 'var(--cat-work)' }}>{I.export}</span>
+          <div className="io-body">
+            <div className="io-title">Export backup</div>
+            <div className="io-sub">Download all {predictions.length} predictions as JSON</div>
+          </div>
+          <span style={{ width: 18, height: 18, color: 'var(--label-3)' }}>{I.chevron}</span>
+        </button>
+        <button className="io-row" onClick={() => fileRef.current && fileRef.current.click()}>
+          <span className="io-ico" style={{ background: 'var(--cat-markets)' }}>{I.import}</span>
+          <div className="io-body">
+            <div className="io-title">Import from file</div>
+            <div className="io-sub">Restore or merge a JSON backup</div>
+          </div>
+          <span style={{ width: 18, height: 18, color: 'var(--label-3)' }}>{I.chevron}</span>
+        </button>
+      </div>
+      <input ref={fileRef} type="file" accept="application/json,.json" onChange={onFile} style={{ display: 'none' }} />
+      <p className="io-note">Your data lives only on this device (IndexedDB). Export regularly to keep a backup you control — no account, no server.</p>
+      {msg && <p className="io-note" style={{ color: 'var(--pos)', fontWeight: 600 }} role="status">{msg}</p>}
+    </div>
   );
 }
 
