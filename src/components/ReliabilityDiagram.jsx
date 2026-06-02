@@ -1,20 +1,13 @@
 import { reliabilityBins } from '../scoring';
 
-// Square plot in a 0..1 x 0..1 space. SVG y grows downward, so mapY inverts.
 const SIZE = 220;
 const PAD = 30;
 const INNER = SIZE - 2 * PAD;
 const mapX = (v) => PAD + v * INNER;
 const mapY = (v) => SIZE - PAD - v * INNER;
 
-// x = mean stated probability, y = observed hit rate. Points below the 45-line
-// at high probability = overconfidence. At personal scale this is directional.
-function ReliabilityDiagram({ predictions }) {
-  const items = predictions
-    .filter((p) => p.outcome !== null)
-    .map((p) => ({ p: p.probability, o: p.outcome }));
-
-  if (items.length === 0) {
+function ReliabilityDiagram({ resolvedItems }) {
+  if (resolvedItems.length === 0) {
     return (
       <section>
         <h2>Reliability</h2>
@@ -23,7 +16,7 @@ function ReliabilityDiagram({ predictions }) {
     );
   }
 
-  const bins = reliabilityBins(items).filter((b) => b.count > 0);
+  const bins = reliabilityBins(resolvedItems).filter((b) => b.count > 0);
 
   return (
     <section>

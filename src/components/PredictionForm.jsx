@@ -1,6 +1,5 @@
 import { useRef, useState } from 'react';
-
-const CATEGORIES = ['work', 'markets', 'personal'];
+import { CATEGORIES } from '../constants';
 
 // Default resolve-by a week out, as YYYY-MM-DD (so the Phase 3 nudge has a
 // real date to compare against, not a graveyard).

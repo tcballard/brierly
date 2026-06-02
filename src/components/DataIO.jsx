@@ -27,6 +27,18 @@ function DataIO({ predictions, onImport }) {
       if (!Array.isArray(data)) {
         throw new Error('expected a JSON array of predictions');
       }
+      for (let i = 0; i < data.length; i++) {
+        const item = data[i];
+        if (typeof item.id !== 'string' || !item.id) {
+          throw new Error(`item ${i}: missing or invalid "id" (expected non-empty string)`);
+        }
+        if (typeof item.text !== 'string' || !item.text) {
+          throw new Error(`item ${i}: missing or invalid "text" (expected non-empty string)`);
+        }
+        if (typeof item.probability !== 'number' || item.probability < 0 || item.probability > 1) {
+          throw new Error(`item ${i}: missing or invalid "probability" (expected number between 0 and 1)`);
+        }
+      }
       await onImport(data);
     } catch (err) {
       setError(`Import failed: ${err.message}`);
